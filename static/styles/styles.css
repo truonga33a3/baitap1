@@ -1,0 +1,7 @@
+/* styles.css */
+.custom-hero {
+    background-color: #007bff; /* Màu nền */
+    color: #fff; /* Màu chữ */
+    padding: 100px; /* Khoảng cách nội dung từ lề */
+    text-align: center; /* Căn giữa nội dung */
+  }

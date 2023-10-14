@@ -1,0 +1,61 @@
+{% extends "userbase.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1>Welcome {{ user.first_name }} {{ user.last_name }}</h1>
+        </div>
+
+        {% if user.tasks %}
+        <div class="jumbotron">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for task in user.tasks %}
+                        {% if task.isCompleted == False %}
+                            <tr class="{{ task.getPriorityClass() }}">
+                                <td>{{ task.description }}</td>
+                                <td class="text-center">
+                                    <form action="/doneTask" method="post">
+                                        <input type="hidden" name="hiddenTaskId"  value="{{ task.task_id }}"/>    
+                                        <button type="submit" class="btn btn-success">Done</button>
+                                    </form>
+                                </td>
+
+                                <td class="text-center">
+                                    <form action="/editTask" method="post">
+                                        <input type="hidden" name="hiddenTaskId"  value="{{ task.task_id }}"/>                                   
+                                        <button type="submit" class="btn btn-info">Edit</button>
+                                    </form>
+                                </td>
+
+                                <td class="text-center">
+                                    <form action="/deleteTask" method="post">
+                                        <input type="hidden" name="hiddenTaskId" value="{{ task.task_id }}"/>
+                                        <button type="submit" class="btn btn-danger">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="jumbotron text-center">
+            <div class="alert alert-warning text-center">
+                <h4>You dont have task in list!</h4>
+            </div>
+
+            <p class="lead"></p>
+
+            <p><a class="btn btn-lg btn-success" href="/newTask">New task</a></p>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
