@@ -245,7 +245,7 @@ def newProject():
             db.session.commit()
             return redirect('/userproject')
         
-        return render_template('/newProject.html', form = form, user = user)
+        return render_template('/newproject.html', form = form, user = user)
 
     return redirect('/')
 
