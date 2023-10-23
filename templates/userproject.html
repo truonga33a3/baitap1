@@ -6,6 +6,31 @@
             <h1>Welcome {{ user.first_name }} {{ user.last_name }}</h1>
         </div>
 
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="/searchProject" method="post">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Search by status..." name="search_query" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="/searchByNameProject" method="post">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Search by name..." name="search_name_query" aria-describedby="button-addon3">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit" id="button-addon3">Search by Name</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
         
         
         {% if user.projects %}
