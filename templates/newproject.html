@@ -5,19 +5,31 @@
         <h1 class="text-center">Welcome {{ user.first_name }} {{ user.last_name }}</h1>
 
         <div class="jumbotron text-center">
-            {% if task %}
-                <h1>Edit Task</h1>
+            {% if project %}
+                <h1>Edit Project</h1>
             {% else %}
-                <h1>New Task</h1>
+                <h1>New Project</h1>
             {% endif %}
 
-            <form action="/newTask" method="post" novalidate>
+            <form action="/newProject" method="post" novalidate>
                 {{ form.hidden_tag() }}
-                {% if task %}
-                    <input type="hidden" name="hiddenTaskId" value="{{ task.task_id }}"/>
+                {% if project %}
+                    <input type="hidden" name="hiddenProjectId" value="{{ project.project_id }}"/>
                 {% else %}
-                    <input type="hidden" name="hiddenTaskId" value="0"/>
+                    <input type="hidden" name="hiddenProjectId" value="0"/>
                 {% endif %}
+
+                <div class="form-group">
+                    {{ form.inputName(class="form-control", placeholder="Name") }}
+
+                    {% if form.inputName.errors %}
+                        {% for error in form.inputName.errors %}
+                            <div class="alert alert-danger">
+                                <strong>Error:</strong> [{{ error }}]
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
 
                 <div class="form-group">
                     {{ form.inputDescription(class="form-control", placeholder="Description") }}
@@ -44,18 +56,8 @@
                 </div>
 
                 <div class="form-group">
-                    {{ form.inputPriority(class="form-control", placeholder="Priority") }}
+                    {{ form.inputStatus(class="form-control", placeholder="Status") }}
                 </div>
-
-                <div class="form-group">
-                    {{ form.inputProject(class="form-control", placeholder="Project") }}
-                </div>
-
-                
-                    <div class="form-group">
-                        {{ form.inputStatus(class="form-control", placeholder="Project") }}
-                    </div>
-                
 
                 <p class="lead"></p>
                 <p>

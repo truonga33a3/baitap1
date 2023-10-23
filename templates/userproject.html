@@ -1,0 +1,66 @@
+{% extends "userbase.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1>Welcome {{ user.first_name }} {{ user.last_name }}</h1>
+        </div>
+
+        
+        
+        {% if user.projects %}
+        <div class="jumbotron">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in user.projects %}
+                        <tr class="{{ project.getStatusClass() }}">
+                            <td>{{ project.name }}</td>
+                            <td>{{ project.deadline.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>{{ project.status }}</td>
+
+                            <td class="text-center">
+                                <form action="/editProject" method="post">
+                                    <input type="hidden" name="hiddenProjectId"  value="{{ project.project_id }}"/>                                   
+                                    <button type="submit" class="btn btn-info">Edit</button>
+                                </form>
+                            </td>
+
+                            <td class="text-center">
+                                <form action="/deleteProject" method="post">
+                                    <input type="hidden" name="hiddenProjectId" value="{{ project.project_id }}"/>
+                                    <button type="submit" class="btn btn-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>                     
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <p class="lead"></p>
+
+            <p><a class="btn btn-lg btn-success" href="/newProject">New project</a></p>
+        </div>
+        {% else %}
+        <div class="jumbotron text-center">
+            <div class="alert alert-warning text-center">
+                <h4>You dont have project in list!</h4>
+            </div>
+
+            <p class="lead"></p>
+
+            <p><a class="btn btn-lg btn-success" href="/newProject">New project</a></p>
+        </div>
+        {% endif %}
+
+        
+    </div>
+{% endblock %}
