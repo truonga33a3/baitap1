@@ -243,7 +243,7 @@ def newProject():
                 project.status = status
 
             db.session.commit()
-            return redirect('/userProject')
+            return redirect('/userproject')
         
         return render_template('/newProject.html', form = form, user = user)
 
