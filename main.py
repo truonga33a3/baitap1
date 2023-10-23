@@ -43,7 +43,7 @@ def showSignUp():
         else:
             flash('Email {} is already exsits!'.format(_email))
             return render_template("signup.html", form = form)
-        
+
     #return render_template('signup.html')
     print("Not validate on submit")
     return render_template('signup.html', form = form)
@@ -96,7 +96,7 @@ def userTask():
         return render_template('usertask.html', user=user, projects=projects, tasks=tasks)
     else:
         return redirect('/')
-    
+
 @app.route('/newTask', methods=['GET', 'POST'])
 def newTask():
     _user_id = session.get('user')
@@ -118,17 +118,17 @@ def newTask():
 
             priority = db.session.query(models.Priority).filter_by(priority_id = _priority_id).first()
             project = db.session.query(models.Project).filter_by(project_id=_project_id).first()
-            
+
             projects = user.projects
 
             if project and _deadline > project.deadline:
                 flash("Deadline of the task cannot be later than the project's deadline.")
                 return render_template('/newtask.html', form=form, user=user)
-            
+
             if status.description == "Đang thực hiện":
                 project.status_id = 2  # Giả sử 2 là mã trạng thái 'Đang thực hiện' trong bảng trạng thái của project
 
-           
+
 
             _task_id = request.form['hiddenTaskId']
             if (_task_id == "0"):
@@ -146,7 +146,7 @@ def newTask():
 
             update_project_status(projects)
             return redirect('/userTask')
-        
+
         return render_template('/newtask.html', form = form, user = user)
 
     return redirect('/userTask')
@@ -154,7 +154,7 @@ def newTask():
 def update_project_status(projects):
     tasks = []
     for project in projects:
-        tasks.extend(project.tasks) 
+        tasks.extend(project.tasks)
 
     all_completed = all(task.status_id == 4 for task in tasks)
     if all_completed:
@@ -177,7 +177,7 @@ def deleteTask():
             update_project_status(projects)
 
             return redirect('/userTask')
-        
+
     return redirect('/')
 
 @app.route('/editTask', methods=['GET', 'POST'])
@@ -199,7 +199,7 @@ def editTask():
             form.inputPriority.default = task.priority_id
             form.process()
             return render_template('/newtask.html', form = form, user = user, task = task)
-        
+
     return redirect('/')
 
 @app.route('/doneTask', methods=['GET', 'POST'])
@@ -213,7 +213,7 @@ def doneTask():
             db.session.commit()
 
         return redirect('/userTask')
-    
+
     return redirect('/')
 
 @app.route('/newProject', methods=['GET', 'POST'])
@@ -243,8 +243,8 @@ def newProject():
                 project.status = status
 
             db.session.commit()
-            return redirect('/userproject')
-        
+            return redirect('/userProject')
+
         return render_template('/newproject.html', form = form, user = user)
 
     return redirect('/')
@@ -260,7 +260,7 @@ def deleteProject():
             db.session.commit()
 
             return redirect('/userProject')
-        
+
     return redirect('/')
 
 @app.route('/editProject', methods=['GET', 'POST'])
@@ -279,7 +279,7 @@ def editProject():
             form.inputStatus.default = project.status_id
             form.process()
             return render_template('/newproject.html', form = form, user = user, project = project)
-        
+
     return redirect('/')
 
 @app.route('/userProject', methods=['GET', 'POST'])
@@ -290,7 +290,7 @@ def userProject():
         return render_template('userproject.html', user = user)
     else:
         return redirect('/')
-    
+
 @app.route('/searchTask', methods=['GET', 'POST'])
 def searchTask():
     _user_id = session.get('user')
@@ -304,14 +304,14 @@ def searchTask():
         return render_template('usertask.html', user=user, tasks=tasks, search_query=search_query)
     else:
         return redirect('/')
-    
+
 @app.route('/searchProject', methods=['GET', 'POST'])
 def searchProject():
     _user_id = session.get('user')
     if _user_id:
         user = db.session.query(models.User).filter_by(user_id=_user_id).first()
         search_query = request.form['search_query']  # Truy vấn tìm kiếm từ form
-        
+
         # Tìm kiếm các project có trạng thái phù hợp với truy vấn tìm kiếm
         projects = db.session.query(models.Project).filter(models.Project.status.has(models.Status.description.ilike(f'%{search_query}%'))).all()
         print(projects)
