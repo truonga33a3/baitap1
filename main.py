@@ -278,7 +278,7 @@ def editProject():
             form.inputDeadline.default = project.deadline
             form.inputStatus.default = project.status_id
             form.process()
-            return render_template('/newProject.html', form = form, user = user, project = project)
+            return render_template('/newproject.html', form = form, user = user, project = project)
         
     return redirect('/')
 
